@@ -1,0 +1,59 @@
+﻿<Window x:Class="Administrator1._0.View.ServiceAdvanced"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Administrator1._0.View"
+        mc:Ignorable="d"
+        Title="ServiceAdvanced" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowStyle="None">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="380"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border BorderThickness="5" BorderBrush="#FF1A315B" 
+                Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="2">
+
+            </Border>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Margin="10 10 0 0">
+                    <TextBlock Text="Название:" Margin="0 2 0 0"
+                           Style="{StaticResource TextBlockTheme}"/>
+                    <TextBlock Text="Длительность:" Margin="0 3 0 0"
+                           Style="{StaticResource TextBlockTheme}"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="10 10 0 0" >
+                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedService.ServiceName}" Margin="0 2 0 0"/>
+                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedService.Duration}" Margin="0 2 0 0"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="5">
+                <ListView ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
+                            <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Duration}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Сохранить" 
+                    FontFamily="Century Gothic" Foreground="Green"
+                    Background="Transparent" BorderBrush="Green" 
+                    Width="100" Height="25" Margin="0 0 0 0" Command="{Binding ServiceSave}" />
+                <Button Content="Закрыть"
+                    FontFamily="Century Gothic" Foreground="Red"
+                    Background="Transparent" BorderBrush="Red" 
+                    Width="100" Height="25" Margin="100 0 0 0" Click="Button_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

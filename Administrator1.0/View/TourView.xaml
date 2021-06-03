@@ -1,0 +1,64 @@
+﻿<Page x:Class="Administrator1._0.View.TourView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Administrator1._0.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="Silver">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FF1A315B">
+            <StackPanel Orientation="Horizontal">
+                <Button Width="auto" Background="Transparent" 
+                        Content="Добавить путевку" 
+                        BorderThickness="0" Margin="5,0,0,0"
+                        Style="{StaticResource MainButtonTheme}"
+                        Command="{Binding OpenNewTourAdvanced}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
+                
+                <TextBlock Text="Поиск по:" FontSize="16" 
+                           Width="100" Height="25" Foreground="White" 
+                           FontFamily="Century Gothic" TextAlignment="Center"
+                           Margin="10 5 0 0"/>
+
+                <ComboBox Width="140" Height="25" Margin="10 0 5 0" SelectedItem="{Binding SelectedType}" >
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="Дате Заезда" Tag="0"/>
+                        <ComboBoxItem Content="Дате Выезда" Tag="1"/>
+                        <ComboBoxItem Content="Номеру комнаты" Tag="2"/>
+                        <ComboBoxItem Content="Категории номера" Tag="3"/>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <TextBox HorizontalAlignment="Right" Width="150"
+                         Height="25" Background="white"
+                         Foreground="Black" 
+                         FontFamily="Century Gothic" FontSize="16" 
+                         Text="{Binding TourFilterText, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </Grid>
+        <ListView ItemsSource="{Binding FilterTours}" Height="400" SelectedItem="{Binding SelectedTour}" Grid.Row="2" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Заезд" DisplayMemberBinding="{Binding ArriveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    <GridViewColumn Header="Выезд" DisplayMemberBinding="{Binding LeaveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    <GridViewColumn Header="Суток" DisplayMemberBinding="{Binding FullDays}"/>
+                    <GridViewColumn Header="Номер комнаты" DisplayMemberBinding="{Binding HotelRoom.RoomNumber}"/>
+                    <GridViewColumn Header="Категория номера" DisplayMemberBinding="{Binding HotelRoom.RoomType.RoomTypeName}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Редактировать" Command="{Binding OpenTourAdvanced}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteTour}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+        
+    </Grid>
+</Page>
