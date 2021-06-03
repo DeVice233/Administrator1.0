@@ -4,10 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Administrator1._0.View"
+      xmlns:other="clr-namespace:Administrator1._0.Other"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ServiceView" Background="White">
-    <Grid Background="Silver">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
@@ -15,12 +16,7 @@
         <Grid Background="#FF1A315B">
             <StackPanel Orientation="Horizontal">
                 <Button Width="auto" Background="Transparent" 
-                        Content="Добавить новую услугу" 
-                        BorderThickness="0" Margin="5,0,0,0"
-                        Style="{StaticResource MainButtonTheme}"
-                        Command="{Binding OpenNewServiceAdvanced}"/>
-                <Button Width="auto" Background="Transparent" 
-                        Content="Добавить услугу" 
+                        Content="Добавить заказ" 
                         BorderThickness="0" Margin="5,0,0,0"
                         Style="{StaticResource MainButtonTheme}"
                         Command="{Binding OpenNewServiceAdvanced}"/>
@@ -34,10 +30,11 @@
 
                 <ComboBox Width="140" Height="25" Margin="10 0 5 0" SelectedItem="{Binding SelectedType}" >
                     <ComboBox.Items>
-                        <ComboBoxItem Content="Дате Заезда" Tag="0"/>
-                        <ComboBoxItem Content="Дате Выезда" Tag="1"/>
-                        <ComboBoxItem Content="Номеру комнаты" Tag="2"/>
-                        <ComboBoxItem Content="Категории номера" Tag="3"/>
+                        <ComboBoxItem Content="Номеру" Tag="0"/>
+                        <ComboBoxItem Content="Названию" Tag="1"/>
+                        <ComboBoxItem Content="Дате заказа" Tag="2"/>
+                        <ComboBoxItem Content="Фамилии" Tag="3"/>
+                        <ComboBoxItem Content="Статусу" Tag="4"/>
                     </ComboBox.Items>
                 </ComboBox>
 
@@ -45,35 +42,43 @@
                          Height="25" Background="white"
                          Foreground="Black" 
                          FontFamily="Century Gothic" FontSize="16" 
-                         Text="{Binding ServiceFilterText, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding OrderFilterText, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </Grid>
         
-        <ListView ItemsSource="{Binding Services}" Height="400" SnapsToDevicePixels="True"
-                  SelectedItem="{Binding SelectedService}" Grid.Row="2" VerticalAlignment="Top">
+        <ListView ItemsSource="{Binding FilterOrders}" Height="850" SnapsToDevicePixels="True"
+                  SelectedItem="{Binding SelectedOrder}" Grid.Row="2" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
-                    <GridViewColumn Header="Статус" Width="120">
+                    <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Service.ServiceName}"/>
+                    
+                    <GridViewColumn Header="Статус" Width="140">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox SelectedItem="{Binding ServiceStatus}" Width="100">
+                                <ComboBox SelectedIndex="{Binding Status, Converter={other:StatusOrderConverter}}" Width="120">
                                     <ComboBox.Items>
-                                        <ComboBoxItem Content="Выполнено"/>
-                                        <ComboBoxItem Content="Подтверждено"/>
+                                        <ComboBoxItem Content="Не указан"/>
+                                        <ComboBoxItem Content="Оплачено" Tag="done"/>
+                                        <ComboBoxItem Content="Подтверждено" Tag="confirmed"/>
+                                        <ComboBoxItem Content="Отменено" Tag="canceled"/>
                                     </ComboBox.Items>
                                 </ComboBox>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date}"/>
-                    <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Duration}"/>
+                    <GridViewColumn Header="Дата Заказа" DisplayMemberBinding="{Binding Date, StringFormat = '{}{0:dd.MM.yyyy  H:mm}'}"/>
+                    <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Service.Duration}"/>
+                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Service.Price}"/>
+                    <GridViewColumn Header="Фамилия заказчика" DisplayMemberBinding="{Binding Client.SecondName}"/>
+                    <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Client.Sex}"/>
+                    <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Client.Birthday, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    <GridViewColumn Header="Номер паспорта" DisplayMemberBinding="{Binding Client.PassportNumber}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Редактировать" Command="{Binding OpenServiceAdvanced}"/>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteService}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

@@ -49,26 +49,41 @@
                              FontSize="20" Foreground="white"
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding EtcViewCommand}"/>
-
+                <!--<RadioButton Content="Конструктор" Height="60"
+                             FontSize="20" Foreground="white"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding  ConstructorViewCommand}"/>-->
             </StackPanel>
         </Grid>
         <Grid  Grid.Column="1" Background="#FF1A315B">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Height="25" Width="25" VerticalAlignment="Top" Margin="2"
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    
+                    <Button Height="25" Width="25" VerticalAlignment="Top" Margin="2" ToolTip="Свернуть"
                     HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
                         Command="{Binding ReduceApp}">
-                    
-                    <Image Source="Icons/reduce.png"/>
-                </Button>
-                <Button Height="25" Width="25" VerticalAlignment="Top" Margin="2"
+
+                        <Image Source="Icons/reduce.png"/>
+                    </Button>
+                    <Button Height="25" Width="25" VerticalAlignment="Top" Margin="2" ToolTip="Закрыть"
                     HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
                         Command="{Binding CloseApp}">
-                    <Image Source="Icons/close.png"/>
-                </Button>
+                        <Image Source="Icons/close.png"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel>
+                    <Button Height="50" Width="50" VerticalAlignment="Bottom" Margin="20 70 0 0" ToolTip="Обновить"
+                    HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
+                        Command="{Binding Refresh}">
+
+                        <Image Source="Icons/reset.png"/>
+                    </Button>
+                </StackPanel>
             </StackPanel>
+            
         </Grid>
         <Frame Grid.Row="1" NavigationUIVisibility="Hidden"
-                        Grid.Column="1" Margin="10"
+                        Grid.Column="1" Margin="10" 
                         Content="{Binding CurrentPage}"/>
 
     </Grid>

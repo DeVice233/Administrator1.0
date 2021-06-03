@@ -138,6 +138,44 @@
 
                     </TabItem.Content>
                 </TabItem>
+                <TabItem Header="Услуги">
+                    <TabItem.Content>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                            <TextBlock Text="Услуги" HorizontalAlignment="Center" Style="{StaticResource TextBlockTheme}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Название:" HorizontalAlignment="Left" Style="{StaticResource TextBlockTheme}"/>
+                                <TextBlock Text="Длительность:" HorizontalAlignment="Left" Style="{StaticResource TextBlockTheme}"
+                                           Margin="130 0 0 0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Width="200" HorizontalAlignment="Left" Style="{StaticResource HintTextBoxTheme}"
+                          Text="{Binding SelectedService.ServiceName}"/>
+                                <TextBox Width="200" HorizontalAlignment="Left" Style="{StaticResource HintTextBoxTheme}"
+                          Text="{Binding SelectedService.Duration}" Margin="10 0 0 0" />
+                            </StackPanel>
+                            <TextBlock Text="Цена:" HorizontalAlignment="Left" Style="{StaticResource TextBlockTheme}"/>
+                            <TextBox Width="200" HorizontalAlignment="Left" Style="{StaticResource HintTextBoxTheme}" Margin="0 5 0 0"
+                          Text="{Binding SelectedService.Price}"/>
+                            <ListView ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}"
+                          Margin="0 10 0 0" Height="200">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
+                                        <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}"/>
+                                        <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Duration}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Добавить" Height="25" Width="100"  Command="{Binding AddService}"/>
+                                <Button Content="Сохранить" Width="100" Command="{Binding SaveService}" Margin="10 0 0 0"/>
+                                <Button Content="Удалить" Width="100" Command="{Binding RemoveService}" Margin="210 0 0 0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+                
+
             </TabControl>
             
            

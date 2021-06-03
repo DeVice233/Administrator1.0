@@ -17,22 +17,21 @@ using System.Windows.Shapes;
 namespace Administrator1._0.View
 {
     /// <summary>
-    /// Логика взаимодействия для ServiceAdvanced.xaml
+    /// Логика взаимодействия для Migration.xaml
     /// </summary>
-    public partial class ServiceAdvanced : Window
+    public partial class Migration : Window
     {
-        public ServiceAdvanced()
+        public Migration()
         {
             InitializeComponent();
+            DataContext = new MigrationVM();
+            
         }
-        public ServiceAdvanced(Order selectedOrder)
+        public Migration(Tour selectedTour)
         {
             InitializeComponent();
-            DataContext = new ServiceAdvancedVM(selectedOrder);
+            DataContext = new MigrationVM(selectedTour);
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+
     }
 }

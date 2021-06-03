@@ -25,6 +25,7 @@ namespace Administrator1._0.ViewModel
                 SignalChanged();
             }
         }
+        
         private Treatment selectedTreatment;
         public Treatment SelectedTreatment
         {
@@ -55,12 +56,26 @@ namespace Administrator1._0.ViewModel
                 SignalChanged();
             }
         }
+        private Service selectedService;
+        public Service SelectedService
+        {
+            get => selectedService;
+            set
+            {
+                selectedService = value;
+                SignalChanged();
+            }
+        }
 
         public ObservableCollection<Meal> Meals { get; set; }
         public ObservableCollection<Treatment> Treatments { get; set; }
         public ObservableCollection<RoomType> RoomTypes { get; set; }
         public ObservableCollection<RoomStatus> RoomStatuses { get; set; }
+        public ObservableCollection<Service> Services { get; set; }
 
+        public CustomCommand AddService { get; set; }
+        public CustomCommand SaveService { get; set; }
+        public CustomCommand RemoveService { get; set; }
         public CustomCommand AddMeal { get; set; }
         public CustomCommand SaveMeal { get; set; }
         public CustomCommand RemoveMeal { get; set; }
@@ -74,6 +89,7 @@ namespace Administrator1._0.ViewModel
         public CustomCommand SaveRoomType { get; set; }
         public CustomCommand RemoveRoomType { get; set; }
 
+
         public EtcVM()
         {
             db = Db.GetDb();
@@ -85,6 +101,9 @@ namespace Administrator1._0.ViewModel
             SignalChanged("RoomStatuses");
             RoomTypes = new ObservableCollection<RoomType>(db.RoomTypes);
             SignalChanged("RoomTypes");
+            Services = new ObservableCollection<Service>(db.Services);
+            SignalChanged("Services");
+           
             AddMeal = new CustomCommand(o =>
             {
                 var meal = new Meal { MealName = "Название", Price = 00 };
@@ -114,6 +133,42 @@ namespace Administrator1._0.ViewModel
                     db.SaveChanges();
                     Meals = new ObservableCollection<Meal>(db.Meals);
                     SignalChanged("Meals");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+            });
+            
+            AddService = new CustomCommand(o =>
+            {
+                var service = new Service { ServiceName = "Название", Price = 00, Duration = "0 мин." };
+                db.Services.Add(service);
+                SelectedService = service;
+                Services = new ObservableCollection<Service>(db.Services);
+                SignalChanged("Services");
+            });
+            SaveService = new CustomCommand(o =>
+            {
+                try
+                {
+                    db.SaveChanges();
+                    Services = new ObservableCollection<Service>(db.Services);
+                    SignalChanged("Services");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+            });
+            RemoveService = new CustomCommand(o =>
+            {
+                db.Services.Remove(SelectedService);
+                try
+                {
+                    db.SaveChanges();
+                    Services = new ObservableCollection<Service>(db.Services);
+                    SignalChanged("Services");
                 }
                 catch (Exception ex)
                 {

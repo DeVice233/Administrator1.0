@@ -1,0 +1,37 @@
+﻿<Window x:Class="Administrator1._0.View.UnOccupingConfirm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Administrator1._0.View"
+        mc:Ignorable="d"
+        Title="Оформление въезда/выезда" Height="300" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Label Content="Выселение" HorizontalAlignment="Center" FontSize="24"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Планируемая дата:" VerticalAlignment="Center" FontSize="14"
+                       HorizontalAlignment="Center"/>
+                <DatePicker Width="200" Margin="50 0 0 0" IsEnabled="False"
+                            SelectedDate="{Binding SelectedTour.LeaveDate}"
+                        IsTodayHighlighted="True"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Фактическая дата/время:" VerticalAlignment="Center" FontSize="14"
+                       HorizontalAlignment="Center"/>
+                <DatePicker Width="200" Margin="12 0 0 0"
+                            SelectedDate="{Binding SelectedTourFactLeaveDate, StringFormat='{}{0:dd.MM.yyyy H:mm}'}"
+                        IsTodayHighlighted="True"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Width="100" Margin="5 0 195 5" Content="OK" Command="{Binding Confirm}"/>
+            <Button  Width="100" Margin="-15 0 0 5" Content="Закрыть" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

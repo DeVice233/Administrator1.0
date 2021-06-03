@@ -113,7 +113,7 @@ namespace Administrator1._0.ViewModel
             {
                 if (SelectedHotelRoom != null)
                 {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Предупреждение", "Удалить выбранный номер?",
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранный номер?", "Предупреждение",
                          MessageBoxButton.OKCancel, MessageBoxImage.Warning
                         );
                     if (messageBoxResult == MessageBoxResult.OK)
@@ -127,7 +127,7 @@ namespace Administrator1._0.ViewModel
                         }
                         catch (Exception ex)
                         {
-                            System.Windows.MessageBox.Show(ex.Message);
+                            MessageBox.Show(ex.Message);
                         }
                     }
                 }

@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Administrator1._0.View"
+          xmlns:other="clr-namespace:Administrator1._0.Other"
         mc:Ignorable="d"
         Title="ServiceAdvanced" Height="450" Width="800" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" WindowStyle="None">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="380"/>
+                <RowDefinition Height="390"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -21,28 +22,98 @@
                 Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="2">
 
             </Border>
-            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Margin="10 10 0 0">
-                    <TextBlock Text="Название:" Margin="0 2 0 0"
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="10 10 0 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Номер заказа:" Margin="0 2 0 0" 
                            Style="{StaticResource TextBlockTheme}"/>
-                    <TextBlock Text="Длительность:" Margin="0 3 0 0"
+                            <TextBlock Text="Дата:" Margin="0 5 0 0" Grid.Row="1"
                            Style="{StaticResource TextBlockTheme}"/>
+                            <TextBlock Text="Название:" Margin="0 6 0 0" Grid.Row="2"
+                           Style="{StaticResource TextBlockTheme}"/>
+                            <TextBlock Text="Длительность:" Margin="0 5 0 0" Grid.Row="3"
+                           Style="{StaticResource TextBlockTheme}"/>
+                            <TextBlock Text="Статус:" Margin="0 3 0 0" Grid.Row="4"
+                           Style="{StaticResource TextBlockTheme}"/>
+                            <TextBox Style="{StaticResource TextBoxTheme}" Width="150" IsReadOnly="True" Grid.Column="1"
+                             Text="{Binding SelectedOrder.Id}" Margin="2 2 0 0"/>
+                            <DatePicker Width="150"  Grid.Column="1" Grid.Row="1"
+                             SelectedDate="{Binding SelectedOrder.Date, StringFormat='{}{0:dd.MM.yyyy}'}" Margin="0 2 0 0"  IsTodayHighlighted="True"/>
+                            <TextBox Style="{StaticResource TextBoxTheme}" Width="150" IsReadOnly="True" Grid.Column="1" Grid.Row="2"
+                             Text="{Binding SelectedOrder.Service.ServiceName}" Margin="0 2 0 0"/>
+                            <TextBox Style="{StaticResource TextBoxTheme}" Width="150" IsReadOnly="True" Grid.Column="1" Grid.Row="3"
+                             Text="{Binding SelectedOrder.Service.Duration , UpdateSourceTrigger=PropertyChanged}" Margin="0 2 0 0" />
+                            <ComboBox SelectedIndex="{Binding SelectedOrder.Status, Converter={other:StatusOrderConverter}}" Width="150" Grid.Column="1" Grid.Row="4">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="Не указан"/>
+                                    <ComboBoxItem Content="Оплачено" Tag="done"/>
+                                    <ComboBoxItem Content="Подтверждено" Tag="confirmed"/>
+                                    <ComboBoxItem Content="Отменено" Tag="canceled"/>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </Grid>
+
+
+                    </StackPanel>
 
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="10 10 0 0" >
-                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedService.ServiceName}" Margin="0 2 0 0"/>
-                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedService.Duration}" Margin="0 2 0 0"/>
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <TextBlock Text="Услуги:" Style="{StaticResource TextBlockTheme}"/>
+                    <ListView ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}" Height="200">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
+                                <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}"/>
+                                <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Duration}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Content="Назначить" Command="{Binding AddServiceToOrder}"
+                            Width="150" Margin="5" HorizontalAlignment="Left"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="5">
-                <ListView ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}">
+                <TextBlock Text="Заказчик:" Style="{StaticResource TextBlockTheme}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Поиск по:" Style="{StaticResource TextBlockTheme}"/>
+                    <ComboBox Width="140" Height="25" Margin="5 -2 5 0"
+                              SelectedItem="{Binding SelectedType}">
+                        <ComboBox.Items>
+                            <ComboBoxItem Content="Имени" Tag="0"/>
+                            <ComboBoxItem Content="Фамилии" Tag="1"/>
+                            <ComboBoxItem Content="Дате рождения" Tag="2"/>
+                            <ComboBoxItem Content="Номеру паспорта" Tag="3"/>
+                        </ComboBox.Items>
+                    </ComboBox>
+                    <TextBox Text="{Binding ClientFilterText, UpdateSourceTrigger=PropertyChanged}" Width="150"
+                           Height="25" Background="white" Foreground="Black" 
+                           FontFamily="Century Gothic" FontSize="16" Margin="0 -2 0 0"/>
+                </StackPanel>
+                <ListView ItemsSource="{Binding FilterClients}" SelectedItem="{Binding SelectedClient}" Height="310">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
-                            <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Duration}"/>
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding SecondName}"/>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}"/>
+                            <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Sex}"/>
+                            <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+                            <GridViewColumn Header="Номер паспорта" DisplayMemberBinding="{Binding PassportNumber}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <Button Content="Назначить" Command="{Binding AddClientToOrder}"
+                            Width="150" Margin="5" HorizontalAlignment="Left"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Сохранить" 

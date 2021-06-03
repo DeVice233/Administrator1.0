@@ -30,37 +30,29 @@ namespace Administrator1._0.ViewModel
         private void OnClientFiltred(object sender, FilterEventArgs e)
         {
             if (!(e.Item is Client client))
-            {
-                e.Accepted = false;
-                return;
-            }
-
+            { e.Accepted = false; return;}
             var filter_text = _ClientFilterText;
-            if (string.IsNullOrWhiteSpace(filter_text))
-                return;
-            if (client.FirstName is null || client.SecondName is null ||
-                client.FatherName is null)
-            {
-                e.Accepted = false;
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(filter_text)) return;
+            if (client.FirstName is null || client.SecondName is null || client.FatherName is null)
+            { e.Accepted = false; return; }
             if ((string)SelectedType.Tag == "0")
                 if (client.FirstName.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
             if ((string)SelectedType.Tag == "1")
-                    if (client.SecondName.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-                if ((string)SelectedType.Tag == "2")
-                    if (client.FatherName.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-                if ((string)SelectedType.Tag == "3")
-                    if (client.Birthday.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-                if ((string)SelectedType.Tag == "4")
-                    if (client.PassportNumber.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-                if ((string)SelectedType.Tag == "5")
-                    if (client.PassportSerias.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-            
+                if (client.SecondName.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if ((string)SelectedType.Tag == "2")
+                if (client.FatherName.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if ((string)SelectedType.Tag == "3")
+                if (client.Birthday.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if ((string)SelectedType.Tag == "4")
+                if (client.PassportNumber.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if ((string)SelectedType.Tag == "5")
+                if (client.PassportSerias.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            if ((string)SelectedType.Tag == "6")
+                if (client.Tour.Id.ToString().Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
             e.Accepted = false;
         }
 
-        private Client selectedClient = new Client { };
+        private Client selectedClient = new Client {};
         public Client SelectedClient
         {
             get => selectedClient;
@@ -70,6 +62,7 @@ namespace Administrator1._0.ViewModel
                 SignalChanged();
             }
         }
+       
 
         private string _ClientFilterText;
         public string ClientFilterText
@@ -91,7 +84,7 @@ namespace Administrator1._0.ViewModel
         public ObservableCollection<Client> Clients { get;set;}
         public ObservableCollection<Treatment> Treatments { get; set; }
         public ObservableCollection<Meal> Meals { get; set; }
-
+        public ObservableCollection<Tour> Tours { get; set; }
 
         public CustomCommand OpenClientAdvanced { get; set; }
         public CustomCommand OpenNewClientAdvanced { get; set; }
@@ -102,10 +95,13 @@ namespace Administrator1._0.ViewModel
             db = Db.GetDb();
             Clients = new ObservableCollection<Client>(db.Clients);
             SignalChanged("Clients");
+            Tours = new ObservableCollection<Tour>(db.Tours);
+            SignalChanged("Tours");
             Treatments = new ObservableCollection<Treatment>(db.Treatments);
             SignalChanged("Treatments");
             Meals = new ObservableCollection<Meal>(db.Meals);
             SignalChanged("Meals");
+
             _FilterClients.Source = Clients;
             _FilterClients.Filter += OnClientFiltred;
 
@@ -118,7 +114,7 @@ namespace Administrator1._0.ViewModel
             {
                 if (SelectedClient != null)
                 {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("Предупреждение", "Удалить выбранного клиента?",
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Удалить выбранного клиента?", "Предупреждение",
                          MessageBoxButton.OKCancel, MessageBoxImage.Warning
                         );
                     if (messageBoxResult == MessageBoxResult.OK)
@@ -127,7 +123,7 @@ namespace Administrator1._0.ViewModel
                         {
                             db.Clients.Remove(SelectedClient);
                             db.SaveChanges();
-                             Clients = new ObservableCollection<Client>(db.Clients);
+                            Clients = new ObservableCollection<Client>(db.Clients);
                             SignalChanged("Clients");
                         }
                         catch (Exception ex)
@@ -152,17 +148,19 @@ namespace Administrator1._0.ViewModel
                     SelectedClient = client;
                     Clients = new ObservableCollection<Client>(db.Clients);
                     SignalChanged("Clients");
-                    try
-                    {
-                        db.SaveChanges();
-                        Clients = new ObservableCollection<Client>(db.Clients);
-                        SignalChanged("Clients");
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Windows.MessageBox.Show(ex.Message);
-                    }
-                    window = new ClientAdvanced(SelectedClient);
+                try
+                {
+                    db.SaveChanges();
+                    Clients = new ObservableCollection<Client>(db.Clients);
+                    SignalChanged("Clients");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+
+
+                window = new ClientAdvanced(SelectedClient);
                     window.ShowDialog();
                 //}
             });

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
-        <Grid Background="Silver">
+        <Grid Background="white">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
@@ -28,7 +28,7 @@
                            Margin="10 5 0 0"/>
 
                     <ComboBox Width="140" Height="25" Margin="5 0 5 0"
-                              SelectedItem="{Binding SelectedType}">
+                              SelectedItem="{Binding SelectedType}" >
                         <ComboBox.Items>
                             <ComboBoxItem Content="Имени" Tag="0"/>
                             <ComboBoxItem Content="Фамилии" Tag="1"/>
@@ -36,6 +36,7 @@
                             <ComboBoxItem Content="Дате рождения" Tag="3"/>
                             <ComboBoxItem Content="Номеру паспорта" Tag="4"/>
                             <ComboBoxItem Content="Серии паспорта" Tag="5"/>
+                            <ComboBoxItem Content="Номеру путевки" Tag="6"/>
                         </ComboBox.Items>
                     </ComboBox>
 
@@ -47,68 +48,31 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <TabControl Grid.Row="1">
-                    <TabItem>
-                        <TabItem.Header>
-                            <TextBlock Text="Список клиентов"/>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <ListView ItemsSource="{Binding FilterClients}" SelectedItem="{Binding SelectedClient}" ScrollViewer.CanContentScroll="True"
-                      Grid.Row="1" Height="400" VerticalAlignment="Top" SelectionChanged="OnSelectionChanged">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}"/>
-                                        <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding SecondName}"/>
-                                        <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding FatherName}"/>
-                                        <GridViewColumn Header="Возраст" DisplayMemberBinding="{Binding Age}"/>
-                                        <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Sex}"/>
-                                        <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                        <GridViewColumn Header="Номер паспорта" DisplayMemberBinding="{Binding PassportNumber}"/>
-                                        <GridViewColumn Header="Серия паспорта" DisplayMemberBinding="{Binding PassportSerias}"/>
-                                        <GridViewColumn Header="Тип питания" DisplayMemberBinding="{Binding Meal.MealName }"/>
-                                        <GridViewColumn Header="Тип лечения" DisplayMemberBinding="{Binding Treatment.TreatmentName}"/>
-                                    </GridView>
-                                </ListView.View>
-                                <ListView.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Редактировать" Command="{Binding OpenClientAdvanced}"/>
-                                        <MenuItem Header="Удалить" Command="{Binding DeleteClient}"/>
-                                    </ContextMenu>
-                                </ListView.ContextMenu>
-                            </ListView>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem>
-                        <TabItem.Header>
-                            <TextBlock Text="Услуги клиента"/>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <StackPanel>
-                                <ListView ItemsSource="{Binding SelectedClientServices}" SelectedItem="{Binding SelectedService}" 
-                                          Height="400">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn Header="Название" DisplayMemberBinding="{Binding ServiceName}"/>
-                                            <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding ServiceStatus}" >
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <ComboBox SelectedItem="{Binding ServiceStatus}">
-                                                            <ComboBox.Items>
-                                                                <ComboBoxItem Content="Выполнено"/>
-                                                                <ComboBoxItem Content="Подтверждено"/>
-                                                            </ComboBox.Items>
-                                                        </ComboBox>
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date}"/>
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </StackPanel>
-                        </TabItem.Content>
-                    </TabItem>
-                </TabControl>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="599*"/>
+                    <ColumnDefinition Width="201*"/>
+                </Grid.ColumnDefinitions>
+                <ListView ItemsSource="{Binding FilterClients}" SelectedItem="{Binding SelectedClient}" ScrollViewer.CanContentScroll="True" Height="850" VerticalAlignment="Top" Grid.ColumnSpan="2" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}" />
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding SecondName}"/>
+                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding FatherName}"/>
+                            <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Sex}"/>
+                            <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                            <GridViewColumn Header="Номер паспорта" DisplayMemberBinding="{Binding PassportNumber}"/>
+                            <GridViewColumn Header="Серия паспорта" DisplayMemberBinding="{Binding PassportSerias}"/>
+                            <GridViewColumn Header="Номер путевки" DisplayMemberBinding="{Binding Tour.Id}"/>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Редактировать" Command="{Binding OpenClientAdvanced}"/>
+                            <MenuItem Header="Удалить" Command="{Binding DeleteClient}"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                </ListView>
+
             </Grid>
         </Grid>
     </Grid>

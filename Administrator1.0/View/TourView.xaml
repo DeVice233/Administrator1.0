@@ -4,9 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Administrator1._0.View"
+             xmlns:other="clr-namespace:Administrator1._0.Other"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Silver">
+    
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Popup}">
+                <Setter Property="StaysOpen" Value="False"/>
+                <EventSetter Event="Button.Click" Handler="Popup_Click"/>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
@@ -18,6 +26,27 @@
                         BorderThickness="0" Margin="5,0,0,0"
                         Style="{StaticResource MainButtonTheme}"
                         Command="{Binding OpenNewTourAdvanced}"/>
+                <ToggleButton x:Name="btnstatus" ToolTip="Status" Width="150" Content="Регистрация"
+                              Foreground="White" FontFamily="Century Gothic" FontSize="16"
+                              Click="btnstatus_Click" Background="Transparent" BorderBrush="Gray" />
+            
+                <Popup PlacementTarget="{Binding ElementName=btnstatus}" Name="popup" PopupAnimation="Slide" AllowsTransparency="True" > 
+                    <Border>
+                        <StackPanel>
+                            <Button Content="Заселить" Width="150" Command="{Binding Occuping}"
+                                    HorizontalContentAlignment="Left" Height="25"/>
+                            <Button Content="Выселить" Width="150" Command="{Binding UnOccuping}"
+                                    HorizontalContentAlignment="Left" Height="25"/>
+                            <Button Content="Отменить заселение" Width="150" Command="{Binding CancelOccuping}"
+                                    HorizontalContentAlignment="Left" Height="25"/>
+                            <Button Content="Отменить выселение" Width="150" Command="{Binding CancelUnOccuping}"
+                                    HorizontalContentAlignment="Left" Height="25"/>
+                            <!--<Button Content="Переселить" Width="150" Command="{Binding MigrationOpen}"
+                                    HorizontalContentAlignment="Left" Height="25"/>-->
+                        </StackPanel>
+                    </Border>
+                </Popup>
+               
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
                 
@@ -32,6 +61,8 @@
                         <ComboBoxItem Content="Дате Выезда" Tag="1"/>
                         <ComboBoxItem Content="Номеру комнаты" Tag="2"/>
                         <ComboBoxItem Content="Категории номера" Tag="3"/>
+                        <ComboBoxItem Content="Статусу путевки" Tag="4"/>
+                        <ComboBoxItem Content="Заказчику" Tag="5"/>
                     </ComboBox.Items>
                 </ComboBox>
 
@@ -42,20 +73,56 @@
                          Text="{Binding TourFilterText, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </Grid>
-        <ListView ItemsSource="{Binding FilterTours}" Height="400" SelectedItem="{Binding SelectedTour}" Grid.Row="2" VerticalAlignment="Top">
+        <ListView ItemsSource="{Binding FilterTours}" Height="850" SelectedItem="{Binding SelectedTour}"
+                  Grid.Row="2" VerticalAlignment="Top" Name="listview">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Заезд" DisplayMemberBinding="{Binding ArriveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                    <GridViewColumn Header="Выезд" DisplayMemberBinding="{Binding LeaveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                    <GridViewColumn Header="Суток" DisplayMemberBinding="{Binding FullDays}"/>
-                    <GridViewColumn Header="Номер комнаты" DisplayMemberBinding="{Binding HotelRoom.RoomNumber}"/>
+                    <GridViewColumn Header="№" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Статус" Width="140">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedIndex="{Binding TourStatus, Converter={other:StatusTourConverter}}" 
+                                          Width="120" IsEnabled="False">
+                                    <ComboBox.Items>
+                                        <ComboBoxItem >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Fill="Gold" Height="10" Width="10" StrokeThickness="1" Stroke="DarkGoldenrod"/>
+                                                <TextBlock Text="Новый" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Tag="occuped">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Fill="Green" Height="10" Width="10" />
+                                                <TextBlock Text="Заселен" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem  Tag="unoccuped">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Fill="Red" Height="10" Width="10" />
+                                                <TextBlock Text="Выселен" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </ComboBoxItem>
+                                    </ComboBox.Items>
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Дата Заезда" DisplayMemberBinding="{Binding ArriveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    <GridViewColumn Header="Дата Выезда" DisplayMemberBinding="{Binding LeaveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                    <GridViewColumn Header="Заказчик" DisplayMemberBinding="{Binding Customer}"/>
+                    <GridViewColumn Header="№ комнаты" DisplayMemberBinding="{Binding HotelRoom.RoomNumber}"/>
                     <GridViewColumn Header="Категория номера" DisplayMemberBinding="{Binding HotelRoom.RoomType.RoomTypeName}"/>
+                    <GridViewColumn Header="Тип питания" DisplayMemberBinding="{Binding Meal.MealName }"/>
+                    <GridViewColumn Header="Тип лечения" DisplayMemberBinding="{Binding Treatment.TreatmentName}"/>
+                    <GridViewColumn Header="Факт Заезд" DisplayMemberBinding="{Binding FactArriveDate, StringFormat='{}{0:dd.MM.yyyy H:mm}'}"/>
+                    <GridViewColumn Header="Факт Выезд" DisplayMemberBinding="{Binding FactLeaveDate, StringFormat='{}{0:dd.MM.yyyy H:mm}'}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Редактировать" Command="{Binding OpenTourAdvanced}"/>
+                    <MenuItem Header="Расширенная информация" Command="{Binding OpenTourAdvanced}"/>
                     <MenuItem Header="Удалить" Command="{Binding DeleteTour}"/>
+                   
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

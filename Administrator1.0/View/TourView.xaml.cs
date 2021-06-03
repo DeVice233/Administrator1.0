@@ -26,5 +26,22 @@ namespace Administrator1._0.View
             InitializeComponent();
             DataContext = new TourVM();
         }
+
+        private void btnstatus_Click(object sender, RoutedEventArgs e)
+        {
+            popup.IsOpen = true;
+            popup.Closed += (senderClosed, eClosed) =>
+            {
+                btnstatus.IsChecked = false;
+            };
+        }
+        private void Popup_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Primitives.Popup popup = sender as System.Windows.Controls.Primitives.Popup;
+            if (popup != null)
+                popup.IsOpen = false;
+        }
+
+       
     }
 }

@@ -1,0 +1,72 @@
+﻿<Window x:Class="Administrator1._0.View.Migration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Administrator1._0.View"
+        mc:Ignorable="d"
+        Title="Переселение из номера в номер" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="2">
+            <TextBlock Text="Размещение по путевке" Style="{StaticResource TextBlockTheme}"
+                       HorizontalAlignment="Center" Width="auto" Margin="5"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.RowSpan="3" Background="LightGray" Margin="5">
+            <StackPanel Orientation="Horizontal" Height="40" Background="#FF1A315B">
+                <Button Width="100" Content="Изменить" Style="{StaticResource MainButtonTheme}" Command="{Binding ChangeHotelRoom}"/>
+            </StackPanel>
+            <ListView Height="300" ItemsSource="{Binding HotelRoomDates}" SelectedItem="{Binding SelectedHotelRoomDate}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                        <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding RoomNumber}"/>
+                        <GridViewColumn Header="Категория номера" DisplayMemberBinding="{Binding RoomTypeName}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5">
+            <StackPanel Height="60" Background="#FF1A315B" >
+                <StackPanel Orientation="Horizontal" Height="25" Margin="4">
+                    <TextBlock Text="Период пребывания клиента:" FontSize="13" Foreground="white"/>
+                    <TextBlock Text="{Binding SelectedTour.ArriveDate, StringFormat='{}{0:dd.MM.yyyy}'}" FontSize="13" 
+                               Foreground="white"
+                               IsEnabled="False" Margin="10 0 10 0"/>
+                    <TextBlock Text="по" FontSize="13" Foreground="white"/>
+                    <TextBlock Text="{Binding SelectedTour.LeaveDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                               FontSize="13" Foreground="white"
+                               IsEnabled="False" Margin="10 0 5 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Категория номера: " Foreground="white" FontSize="13" Margin="0 0 10 0"/>
+                    <ComboBox ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding SelectedRoomType}" 
+                              DisplayMemberPath="RoomTypeName" Width="150"/>
+                </StackPanel>
+               
+            </StackPanel>
+            <StackPanel>
+                <ListView Height="200" ItemsSource="{Binding HotelRooms}" SelectedItem="{Binding SelectedHotelRoom}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Категория номера" DisplayMemberBinding="{Binding RoomType.RoomTypeName}"/>
+                            <GridViewColumn Header="№" DisplayMemberBinding="{Binding RoomNumber}"/>
+                            <GridViewColumn Header="Кол-во мест" DisplayMemberBinding="{Binding BedNumber}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>

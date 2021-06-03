@@ -11,14 +11,24 @@
                               HorizontalAlignment="Stretch"
                               Background="{TemplateBinding Background}"
                               >
-                            
+                            <Polygon Name="select"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center" Fill="White"
+                                     Points="0,0 10,0 10,60 0,60"
+                                     Visibility="Hidden"/>
                             <TextBlock  Text="{TemplateBinding Property=Content}"
                                         VerticalAlignment="Center"
                                        Margin="50 0 0 0"
                                         />
 
                         </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="select" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
+                    
                 </Setter.Value>
             </Setter>
             <Setter Property="Background" Value="Transparent"/>
@@ -27,6 +37,7 @@
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="Background" Value="#FF0B1A34"/>
+
             </Trigger>
            <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#FF334D7E"/>

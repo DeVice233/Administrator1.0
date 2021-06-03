@@ -4,88 +4,137 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Administrator1._0.View"
+         xmlns:other="clr-namespace:Administrator1._0.Other"
       mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None"
       Height="450" Width="800" Background="white"
       Title="ClientAdvanced">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="380"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Border BorderThickness="5" BorderBrush="#FF1A315B" 
                 Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="2">
 
         </Border>
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-            <StackPanel Orientation="Vertical" Margin="10 10 0 0">
-                <TextBlock Text="Имя:" Margin="0 2 0 0"
+        <TabControl Margin="2">
+            <TabItem Header="Редактирование">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="380"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" Margin="10 10 0 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Имя:" Margin="0 2 0 0"
                            Style="{StaticResource TextBlockTheme}"/>
-                <TextBlock Text="Фамилия:" Margin="0 3 0 0"
+                                    <TextBlock Text="Фамилия:" Margin="0 3 0 0"
+                           Style="{StaticResource TextBlockTheme}" Grid.Row="1"/>
+                                    <TextBlock Text="Отчество:" Margin="0 5 0 0"
+                           Style="{StaticResource TextBlockTheme}" Grid.Row="2"/>
+                                    <TextBlock Text="Дата рождения:" Margin="0 5 0 0"
+                           Style="{StaticResource TextBlockTheme}" Grid.Row="3"/>
+                                    <StackPanel Orientation="Horizontal"  Margin="0 3 0 0" Grid.Row="4">
+                                        <TextBlock Text="Возраст:" Margin="0 3 0 0"
                            Style="{StaticResource TextBlockTheme}"/>
-                <TextBlock Text="Отчество:" Margin="0 5 0 0"
+                                        <TextBox Style="{StaticResource TextBoxTheme}" Width="30" Text="{Binding SelectedClientAge}" />
+                                    </StackPanel>
+                                    <TextBlock Text="Серия паспорта:" Grid.Row="5" Margin="0 4 0 0"
                            Style="{StaticResource TextBlockTheme}"/>
-                <TextBlock Text="Дата рождения:" Margin="0 5 0 0"
+                                    <TextBlock Text="Номер паспорта:" Grid.Row="6" Margin="0 4 0 0"
                            Style="{StaticResource TextBlockTheme}"/>
-                <StackPanel Orientation="Horizontal"  Margin="0 3 0 0">
-                    <TextBlock Text="Возраст:" Margin="0 3 0 0"
-                           Style="{StaticResource TextBlockTheme}"/>
-                    <TextBox Style="{StaticResource TextBoxTheme}" Width="30" Text="{Binding SelectedClientAge}" />
-                </StackPanel>
-               
-                <TextBlock Text="Серия паспорта:"  Margin="0 4 0 0"
-                           Style="{StaticResource TextBlockTheme}"/>
-                <TextBlock Text="Номер паспорта:" Margin="0 4 0 0"
-                           Style="{StaticResource TextBlockTheme}"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" Margin="10 10 0 0" >
-                <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedClient.FirstName}" Margin="0 2 0 0"/>
-                <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedClient.SecondName}" Margin="0 2 0 0"/>
-                <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedClient.FatherName}" Margin="0 2 0 0"/>
-                <DatePicker  Width="150" 
+                                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Grid.Column="1"
+                                             Text="{Binding SelectedClient.FirstName}" Margin="0 2 0 0"/>
+                                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Grid.Column="1" Grid.Row="1"
+                                             Text="{Binding SelectedClient.SecondName}" Margin="0 2 0 0"/>
+                                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Grid.Column="1" Grid.Row="2"
+                                             Text="{Binding SelectedClient.FatherName}" Margin="0 2 0 0"/>
+                                    <DatePicker  Width="150"  Grid.Column="1" Grid.Row="3"
                          SelectedDate="{Binding SelectedClient.Birthday, StringFormat='{}{0:dd.MM.yyyy}'}" 
                          Margin="0 2 0 0"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Пол:" Margin="0 3 0 0"
+                                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
+                                        <TextBlock Text="Пол:" Margin="0 3 0 0"
                            Style="{StaticResource TextBlockTheme}"/>
-                    <TextBox Margin="5 2 0 0" Width="45" HorizontalAlignment="Left"  
+                                        <TextBox Margin="5 2 0 0" Width="45" HorizontalAlignment="Left"  
                              Text="{Binding SelectedClient.Sex}">
-                      
-                    </TextBox>
-                </StackPanel>
-              
-                <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedClient.PassportSerias}" Margin="0 2 0 0"/>
-                <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Text="{Binding SelectedClient.PassportNumber}" Margin="0 2 0 0"/>
-            </StackPanel>
-        </StackPanel>
-        
-        
-        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1">
-            <TextBlock Text="Тип питания:"
-                       Style="{StaticResource TextBlockTheme}"
-                       Margin="0 10 0 0"/>
-            <ComboBox Margin="0 0 0 0" ItemsSource="{Binding Meals}" DisplayMemberPath="MealName"
-                      SelectedItem="{Binding SelectedClient.Meal}"/>
-            <TextBlock Text="Тип лечения:"
-                       Style="{StaticResource TextBlockTheme}"
-                       Margin="0 10 0 0"/>
-            <ComboBox Margin="0 0 0 0" ItemsSource="{Binding Treatments}" DisplayMemberPath="TreatmentName"
-                      SelectedItem="{Binding SelectedClient.Treatment}"/>
 
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Сохранить" 
+                                        </TextBox>
+                                    </StackPanel>
+                                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Grid.Column="1" Grid.Row="5"
+                                             Text="{Binding SelectedClient.PassportSerias}" Margin="0 2 0 0"/>
+                                    <TextBox Style="{StaticResource TextBoxTheme}" Width="150" Grid.Column="1" Grid.Row="6"
+                                             Text="{Binding SelectedClient.PassportNumber}" Margin="0 2 0 0"/>
+                                </Grid>
+                                
+                            </StackPanel>
+                          
+                        </StackPanel>
+
+
+                        
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Сохранить" 
                     FontFamily="Century Gothic" Foreground="Green"
                     Background="Transparent" BorderBrush="Green" 
                     Width="100" Height="25" Margin="0 0 0 0" Command="{Binding ClientSave}" />
-            <Button Content="Закрыть"
+                            <Button Content="Закрыть"
                     FontFamily="Century Gothic" Foreground="Red"
                     Background="Transparent" BorderBrush="Red" 
                     Width="100" Height="25" Margin="100 0 0 0" Click="Button_Click" />
-        </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Услуги клиента">
+                <TabItem.Content>
+                    <StackPanel>
+                        <ListView ItemsSource="{Binding SelectedClientOrders}" SelectedItem="{Binding SelectedOrder}" 
+                                          Height="420">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Номер" DisplayMemberBinding="{Binding Id}"/>
+                                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Service.ServiceName}"/>
+
+                                    <GridViewColumn Header="Статус" Width="140">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox SelectedIndex="{Binding Status, Converter={other:StatusOrderConverter}}" Width="120">
+                                                    <ComboBox.Items>
+                                                        <ComboBoxItem Content="Не указан"/>
+                                                        <ComboBoxItem Content="Оплачено" Tag="done"/>
+                                                        <ComboBoxItem Content="Подтверждено" Tag="confirmed"/>
+                                                        <ComboBoxItem Content="Отменено" Tag="canceled"/>
+                                                    </ComboBox.Items>
+                                                </ComboBox>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Дата Заказа" DisplayMemberBinding="{Binding Date, StringFormat = '{}{0:dd.MM.yyyy}'}"/>
+                                    <GridViewColumn Header="Длительность" DisplayMemberBinding="{Binding Service.Duration}"/>
+                                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Service.Price}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

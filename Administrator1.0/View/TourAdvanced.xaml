@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Administrator1._0.View"
+         xmlns:other="clr-namespace:Administrator1._0.Other"
         mc:Ignorable="d"
         Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
     
@@ -28,7 +29,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         
-                        <StackPanel Grid.Row="0" Grid.Column="0">
+                        <StackPanel Grid.RowSpan="2" Grid.Column="0" >
                             <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
                                 <TextBlock Text="Дата приезда:"
                            Style="{StaticResource TextBlockTheme}"
@@ -42,6 +43,7 @@
                                 <DatePicker Width="250" Margin="12 0 0 0"
                             SelectedDate="{Binding SelectedTour.LeaveDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                             </StackPanel>
+                           
                             <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
                                 <TextBlock Text="Кол-во полных дней:"
                            Style="{StaticResource TextBlockTheme}"/>
@@ -58,10 +60,46 @@
                            Style="{StaticResource TextBlockTheme}"/>
                                 <TextBlock Width="100" Margin="15 0 0 0" Text="{Binding SelectedTour.HotelRoom.RoomType.RoomTypeName}"
                            Style="{StaticResource TextBlockTheme}"/>
+                                
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Margin="5">
+                                <TextBlock Text="Тип питания:"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                                <ComboBox Margin="0 0 0 0" ItemsSource="{Binding Meals}" DisplayMemberPath="MealName"
+                      SelectedItem="{Binding SelectedTour.Meal}"/>
+                                <TextBlock Text="Тип лечения:"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                                <ComboBox Margin="0 0 0 0" ItemsSource="{Binding Treatments}" DisplayMemberPath="TreatmentName"
+                      SelectedItem="{Binding SelectedTour.Treatment}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                    <TextBlock Text="Факт приезд:"
+                           Style="{StaticResource TextBlockTheme}"/>
+                                    <TextBlock Width="250" Margin="12 0 0 0" IsEnabled="False"
+                            Text="{Binding SelectedTour.FactArriveDate, StringFormat='{}{0:dd.MM.yyyy H:mm}'}" Style="{StaticResource TextBlockTheme}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                                    <TextBlock Text="Факт отъезд:"
+                           Style="{StaticResource TextBlockTheme}"/>
+                                    <TextBlock Width="250" Margin="14 0 0 0" Style="{StaticResource TextBlockTheme}"
+                           Text="{Binding SelectedTour.FactLeaveDate, StringFormat='{}{0:dd.MM.yyyy H:mm}'}" IsEnabled="False" />
+                                </StackPanel>
+                                <!--<StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Условная цена:"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                                    <TextBlock Text="{Binding TotalPrice}" Width="100"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                                </StackPanel>-->
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button  Command="{Binding PrintTourInfo}" Content="Печать" Width="120" Height="25" Margin="0 0 280 0"> 
+                                
+                            </Button>
                             <Button Content="Сохранить" Command="{Binding TourSave}"
                     FontFamily="Century Gothic" Foreground="Green"
                     Background="Transparent" BorderBrush="Green" 
@@ -125,14 +163,18 @@
                             <ListView Height="140"  Margin="5" ItemsSource="{Binding SelectedTourClients}" SelectedItem="{Binding SelectedClient}">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Питание" DisplayMemberBinding="{Binding Meal.MealName}"/>
-                                        <GridViewColumn Header="Лечение" DisplayMemberBinding="{Binding Treatment.TreatmentName}"/>
                                         <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding SecondName}"/>
                                         <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}"/>
                                         <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Sex}"/>
-                                        <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday}"/>
+                                        <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday, StringFormat='{}{0:dd.MM.yyyy}'}"/>
                                     </GridView>
                                 </ListView.View>
+                                <ListView.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Сделать заказчиком" Command="{Binding DoCustomer}"/>
+                                        <MenuItem Header="Убрать заказчика" Command="{Binding RemoveCustomer}"/>
+                                    </ContextMenu>
+                                </ListView.ContextMenu>
                             </ListView>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Margin="5">
@@ -159,7 +201,7 @@
                                         <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding SecondName}" />
                                         <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}" />
                                         <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding FatherName}" />
-                                        <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday}" />
+                                        <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding Birthday, StringFormat='{}{0:dd.MM.yyyy}'}" />
                                         <GridViewColumn Header="Номер паспорта " DisplayMemberBinding="{Binding PassportNumber}" />
                                     </GridView>
                                 </ListView.View>
@@ -173,7 +215,19 @@
                                         Height="25" Margin="20 18 0 0" Command="{Binding RemoveClient}" />
                                 
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 150 0 0" 
+                            <StackPanel Orientation="Horizontal" Margin="5 10 0 0">
+                                <TextBlock Text="Заказчик:" Style="{StaticResource TextBlockTheme}"/>
+                                <TextBlock Text="{Binding SelectedTour.Customer}" Width="290" Margin="10 0 0 0" Style="{StaticResource TextBlockTheme}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5 10 0 0">
+                                <TextBlock Text="Кол-во взрослых:" Style="{StaticResource TextBlockTheme}"/>
+                                <TextBlock Text="{Binding AdultCount}" Width="100" Margin="13 0 0 0" Style="{StaticResource TextBlockTheme}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5 10 0 0">
+                                <TextBlock Text="Кол-во детей:" Style="{StaticResource TextBlockTheme}"/>
+                                <TextBlock Text="{Binding ChildCount}" Width="100" Margin="40 0 0 0" Style="{StaticResource TextBlockTheme}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 60 0 0" 
                                         VerticalAlignment="Bottom">
                                 <Button Content="Сохранить" Command="{Binding TourSave}"
                     FontFamily="Century Gothic" Foreground="Green"
@@ -185,6 +239,127 @@
                     Width="100" Height="25" Margin="100 0 0 0" Click="Button_Click"/>
 
                             </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Оплаты">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition  Width="120"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.RowSpan="6" Margin="5 0 0 0" >
+                            <TextBlock Text="Проживание:" Grid.Row="0" HorizontalAlignment="Right"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 20 0"/>
+                            <TextBlock Text="Питание:" Grid.Row="1" HorizontalAlignment="Right"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 20 0"/>
+                            <TextBlock Text="Лечение:" Grid.Row="2" HorizontalAlignment="Right"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 20 0"/>
+                            <TextBlock Text="Сумма:" Grid.Row="3" HorizontalAlignment="Right"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 20 0"/>
+
+
+                            <TextBlock Text="Оплата:"  Grid.Row="4"
+                       Style="{StaticResource TextBlockTheme}" HorizontalAlignment="Right"
+                       Margin="0 10 20 0"/>
+                            <TextBlock Text="Долг:"  Grid.Row="5" HorizontalAlignment="Right"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 20 0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.RowSpan="6">
+                            <TextBlock Text="{Binding HotelRoomPrice}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="0" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding MealPrice}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="1" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding TreatmentPrice}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="2" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding SelectedTour.Price}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="3" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding SelectedTour.Payment}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="4" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding SelectedTour.Debt}" Width="120"
+                       Style="{StaticResource TextBlockTheme}" Grid.Row="5" Grid.Column="1"
+                       Margin="0 10 0 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                            <TextBlock Text="Заказчик: " Width="90"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                            <TextBlock Text="{Binding SelectedTour.Customer}" Width="400"
+                       Style="{StaticResource TextBlockTheme}"
+                       Margin="0 10 0 0"/>
+                        </StackPanel>
+                        <TextBlock Text="Заказанные услуги:" Style="{StaticResource TextBlockTheme}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom"/>
+                        <ListView Grid.Row="2" Grid.Column="2" Grid.RowSpan="6" ItemsSource="{Binding FilterOrders}" SelectedItem="{Binding SelectedOrder}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Service.ServiceName}"/>
+                                    <GridViewColumn Header="Статус" Width="140">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox SelectedIndex="{Binding Status, Converter={other:StatusOrderConverter}}" Width="120">
+                                                    <ComboBox.Items>
+                                                        <ComboBoxItem Content="Не указан"/>
+                                                        <ComboBoxItem Content="Оплачено" Tag="done"/>
+                                                        <ComboBoxItem Content="Подтверждено" Tag="confirmed"/>
+                                                        <ComboBoxItem Content="Отменено" Tag="canceled"/>
+                                                    </ComboBox.Items>
+                                                </ComboBox>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Дата Заказа" DisplayMemberBinding="{Binding Date, StringFormat = '{}{0:dd.MM.yyyy H:mm}'}"/>
+                                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Service.Price}"/>
+                                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Client.SecondName}"/>
+                                    <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Client.SecondName}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="2" VerticalAlignment="Top">
+                            <TextBlock Text="Сумма заказанных услуг:" Style="{StaticResource TextBlockTheme}"/>
+                            <TextBlock Text="{Binding OrderedServicesCash}" Style="{StaticResource TextBlockTheme}" Width="200" Margin="5 0 0 0"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="8" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
+                            <TextBlock Text="Добавить оплату:" Style="{StaticResource TextBlockTheme}" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                            <TextBox Text="{Binding CashToPay}" VerticalAlignment="Center" Style="{StaticResource TextBoxTheme}" Width="120"/>
+                            <Button Content="Внести" VerticalAlignment="Center" Margin="10 0 0 0" Width="100" Command="{Binding Pay}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="9" Grid.Column="2"
+                                        VerticalAlignment="Center">
+                            <Button Content="Сохранить" Command="{Binding TourSave}"
+                    FontFamily="Century Gothic" Foreground="Green"
+                    Background="Transparent" BorderBrush="Green" 
+                    Width="100" Height="25" Margin="0 0 0 0"/>
+                            <Button Content="Закрыть" 
+                    FontFamily="Century Gothic" Foreground="Red"
+                    Background="Transparent" BorderBrush="Red" 
+                    Width="100" Height="25" Margin="100 0 0 0" Click="Button_Click"/>
+
                         </StackPanel>
                     </Grid>
                 </TabItem.Content>

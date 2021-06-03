@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HotelRoomView" Background="White">
 
-    <Grid Background="Silver">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
@@ -34,9 +34,7 @@
                     <ComboBox.Items>
                         <ComboBoxItem Content="Номеру комнаты" Tag="0"/>
                         <ComboBoxItem Content="Кол-ву мест" Tag="1"/>
-                        <ComboBoxItem Content="Статусc:\users\user\source\repos\administrator1.0 — pages + db6\administrator1.0\view\hotelroomview.xaml.cs
-c:\users\user\source\repos\administrator1.0 — pages + db6\administrator1.0\view\hotelroomview.xaml
-у номера" Tag="2"/>
+                        <ComboBoxItem Content="Статусу" Tag="2"/>
                         <ComboBoxItem Content="Категории номера" Tag="3"/>
                     </ComboBox.Items>
                 </ComboBox>
@@ -48,7 +46,7 @@ c:\users\user\source\repos\administrator1.0 — pages + db6\administrator1.0\vie
                           Text="{Binding HotelRoomFilterText, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </Grid>
-        <ListView ItemsSource="{Binding FilterHotelRooms}" Height="400" SelectedItem="{Binding SelectedHotelRoom}" Grid.Row="2" VerticalAlignment="Top">
+        <ListView ItemsSource="{Binding FilterHotelRooms}" Height="850" SelectedItem="{Binding SelectedHotelRoom}" Grid.Row="2" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Номер комнаты" DisplayMemberBinding="{Binding RoomNumber}"/>

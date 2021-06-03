@@ -17,19 +17,22 @@ using System.Windows.Shapes;
 namespace Administrator1._0.View
 {
     /// <summary>
-    /// Логика взаимодействия для ServiceAdvanced.xaml
+    /// Логика взаимодействия для OccupingConfirm.xaml
     /// </summary>
-    public partial class ServiceAdvanced : Window
+    public partial class OccupingConfirm : Window
     {
-        public ServiceAdvanced()
+        public OccupingConfirm()
         {
             InitializeComponent();
+            DataContext = new OccupingConfirmVM();
         }
-        public ServiceAdvanced(Order selectedOrder)
+
+        public OccupingConfirm(Tour selectedTour)
         {
             InitializeComponent();
-            DataContext = new ServiceAdvancedVM(selectedOrder);
+            DataContext = new OccupingConfirmVM(selectedTour);
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();

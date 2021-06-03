@@ -15,11 +15,12 @@
     <None Remove="Icons\dots.png" />
     <None Remove="Icons\hotel.png" />
     <None Remove="Icons\reduce.png" />
+    <None Remove="Icons\reset.png" />
     <None Remove="Icons\tour1.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+    <PackageReference Include="FreeSpire.XLS" Version="10.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
   </ItemGroup>
 
@@ -31,6 +32,7 @@
     <Resource Include="Icons\dots.png" />
     <Resource Include="Icons\hotel.png" />
     <Resource Include="Icons\reduce.png" />
+    <Resource Include="Icons\reset.png" />
     <Resource Include="Icons\tour1.png" />
   </ItemGroup>
 

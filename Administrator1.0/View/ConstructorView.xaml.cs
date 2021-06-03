@@ -1,8 +1,6 @@
-﻿using Administrator1._0.DBEntities;
-using Administrator1._0.ViewModel;
+﻿using Administrator1._0.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,18 +17,14 @@ using System.Windows.Shapes;
 namespace Administrator1._0.View
 {
     /// <summary>
-    /// Логика взаимодействия для ClientView.xaml
+    /// Логика взаимодействия для CostructorView.xaml
     /// </summary>
-    public partial class ClientView : Page
+    public partial class ConstructorView : Page
     {
-
-        public ClientView()
+        public ConstructorView()
         {
             InitializeComponent();
-            DataContext = new ClientVM();
+            DataContext = new ConstructorVM();
         }
-
-       
-
     }
 }

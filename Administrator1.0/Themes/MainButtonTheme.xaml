@@ -9,11 +9,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
+                        
                         <Grid VerticalAlignment="Stretch"
                               HorizontalAlignment="Stretch"
                               Background="{TemplateBinding Background}"
                               >
-
+                            <Border BorderThickness="5 5 0 0" BorderBrush="Black"  Visibility="Hidden" Name="border"/>
                             <TextBlock  Text="{TemplateBinding Property=Content}"
                                         VerticalAlignment="Center"
                                         Margin="10,0,10,0" Foreground="white"
@@ -22,6 +23,9 @@
                            
                         </Grid>
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Visibility" Value="Visible"/>
+                            </Trigger>
                             <EventTrigger RoutedEvent="PreviewMouseDown">
                                 <BeginStoryboard>
                                     <Storyboard>
