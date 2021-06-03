@@ -22,7 +22,7 @@ namespace Administrator1._0
         public DbSet<Service> Services { get; set; }
         public DbSet<Order> Orders { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) // 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) // aaaa
         {
             var sb = new SqlConnectionStringBuilder();
             sb.DataSource = File.ReadAllText("sqlserverMax.txt");
